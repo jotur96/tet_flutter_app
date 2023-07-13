@@ -1,6 +1,6 @@
 import 'package:go_router/go_router.dart';
 import 'package:tet_flutter_app/features/auth/presentation/screens/login_screen.dart';
-import 'package:tet_flutter_app/features/home/presentation/screens/home_screen.dart';
+import 'package:tet_flutter_app/features/home/presentation/screens/home.dart';
 
 
 

@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:tet_flutter_app/features/home/presentation/widgets/user_card.dart';
 // import 'package:tet_flutter_app/features/home/presentation/blocs/user_list_bloc/user_list_bloc.dart';
 
-import '../blocs/bloc/user_list_bloc.dart';
+import '../blocs/user_bloc/user_list_bloc.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -62,10 +63,7 @@ class _HomeScreenState extends State<HomeScreen> {
             return ListView.builder(
               itemBuilder: (context, index) {
                 final user = state.users![index];
-                return ListTile(
-                  title: Text(user.firstName),
-                  subtitle: Text(user.email),
-                );
+                return UserCard(user: user);
               },
               itemCount: state.users!.length,
             );
