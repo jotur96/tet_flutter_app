@@ -11,23 +11,39 @@ class UserCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
+        leading: CircleAvatar(
+          radius: 35,
+          backgroundImage: NetworkImage(user.avatar),
+        ),
         onTap: () {
           onPressed(user);
         },
-        title: Text('${user.firstName} ${user.lastName}'),
+        title: Column(
+          children: [
+            const SizedBox(height: 10),
+            Text('${user.firstName} ${user.lastName}',
+              style: const TextStyle(fontSize: 20),),
+            const SizedBox(height: 10),
+          ],
+        ),
         subtitle: GestureDetector(
           onTap: () {
             _launchEmail(context);
           },
-          child: Text(
-            user.email,
-            style: const TextStyle(
-              color: Colors.blue,
-            ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              Text(
+                user.email,
+                style: const TextStyle(
+                  color: Colors.blue,
+                  fontSize: 20
+                ),                
+              ),
+              const SizedBox(height: 10,),
+            ],
           ),
-        ),
-        leading: CircleAvatar(
-          backgroundImage: NetworkImage(user.avatar),
         ),
       ),
     );
