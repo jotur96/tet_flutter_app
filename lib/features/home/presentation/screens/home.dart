@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,7 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Lista de Usuarios'),
+          title: const Center(child: Text('Lista de Usuarios')),
           automaticallyImplyLeading: false,
         ),
         body: _buildBody(),

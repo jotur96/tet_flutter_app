@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_flushbar/flutter_flushbar.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../domain/repositories/auth_repository.dart';
@@ -78,7 +77,6 @@ class _SignInViewState extends State<SignInView> with RouteAware {
                       ? null
                       : () async {
                           context.read<SignInCubit>().signIn();
-                          print('status form ${state.formStatus}');
                           if (state.formStatus ==
                               FormStatus.submissionSuccess) {
                             context.pushReplacement('/home');
@@ -112,9 +110,9 @@ class _SignInViewState extends State<SignInView> with RouteAware {
     return TextFormField(
       key: const Key('signIn_username'),
       decoration: InputDecoration(
-        labelText: 'Usuario',
+        labelText: 'Username',
         errorText: state.usernameStatus == UsernameStatus.invalid
-            ? 'Usuario invalido'
+            ? 'Usuario incorrecto'
             : null,
       ),
       inputFormatters: [
@@ -147,7 +145,7 @@ class _SignInViewState extends State<SignInView> with RouteAware {
         ),
         labelText: 'Password',
         errorText: state.passwordStatus == PasswordStatus.invalid
-            ? 'Password Invalido ingrese 5 digitos'
+            ? 'Password incorrecto ingrese 5 digitos'
             : null,
       ),
       onChanged: (String value) {
