@@ -19,16 +19,13 @@ class UserListBloc extends Bloc<UserListEvent, UserListState> {
   }
 
   Future<void> onGetUsers(GetUsersEvent event, Emitter<UserListState> emit) async {
-    print("ON get useRS");
     try {
       final List<UserModel> users = await _getUsersUseCase();
-
-      print('users: $users');
 
       if (users.isNotEmpty) {
         emit(UserListDone(users));
       } else {
-        emit(UserListError('No se encontraron usuarios.'));
+        emit(const UserListError('No se encontraron usuarios.'));
       }
     } catch (error) {
       emit(UserListError('Error al obtener los usuarios: $error'));

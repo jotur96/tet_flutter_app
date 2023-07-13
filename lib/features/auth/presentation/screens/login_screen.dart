@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_flushbar/flutter_flushbar.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../domain/repositories/auth_repository.dart';
@@ -34,12 +36,10 @@ class SignInView extends StatefulWidget {
   State<SignInView> createState() => _SignInViewState();
 }
 
-class _SignInViewState extends State<SignInView> {
+class _SignInViewState extends State<SignInView> with RouteAware {
   Timer? debounce;
 
   bool obscurePassword = true;
-
-  
 
   @override
   void dispose() {
@@ -49,13 +49,14 @@ class _SignInViewState extends State<SignInView> {
 
   @override
   Widget build(BuildContext context) {
-
     final screenHeight = MediaQuery.of(context).size.height;
     // final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      
         appBar: AppBar(
           title: const Center(child: Text('Sign In')),
+          automaticallyImplyLeading: false,
         ),
         body:
             BlocConsumer<SignInCubit, SignInState>(listener: (context, state) {
@@ -67,47 +68,8 @@ class _SignInViewState extends State<SignInView> {
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(height: screenHeight * 0.2),
-                TextFormField(
-      key: const Key('signIn_username'),
-      decoration: InputDecoration(
-        labelText: 'Usuario',
-        errorText: state.usernameStatus == UsernameStatus.invalid
-            ? 'Usuario invalido'
-            : null,
-      ),
-      inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')), // Permite solo letras
-      ],
-      onChanged: (String value) {
-        if (debounce?.isActive ?? false) debounce?.cancel();
-        debounce = Timer(const Duration(milliseconds: 500), () {
-          context.read<SignInCubit>().usernameChanged(value);
-        });
-      },
-    ),
-                TextFormField(
-      key: const Key('signIn_password'),
-      obscureText: obscurePassword,
-      keyboardType: TextInputType.number,
-      inputFormatters: [LengthLimitingTextInputFormatter(5)],
-      decoration: InputDecoration(
-        suffixIcon: IconButton(
-        icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
-        onPressed: () {
-        setState(() {
-          obscurePassword = !obscurePassword;
-        });
-      },
-      ),
-        labelText: 'Password',
-        errorText: state.passwordStatus == PasswordStatus.invalid
-            ? 'Password Invalido ingrese 5 digitos'
-            : null,
-      ),
-      onChanged: (String value) {
-        context.read<SignInCubit>().passwordChanged(value);
-      },
-    ),
+                textFormFieldUsername(context, state),
+                textFormFieldPassword(context, state),
                 const SizedBox(height: 8.0),
                 ElevatedButton(
                   key: const Key('signIn_continue'),
@@ -117,9 +79,12 @@ class _SignInViewState extends State<SignInView> {
                       : () async {
                           context.read<SignInCubit>().signIn();
                           print('status form ${state.formStatus}');
-                          if(state.formStatus == FormStatus.submissionSuccess) {
-                            context.push('/userList');
-                          }
+                          if (state.formStatus ==
+                              FormStatus.submissionSuccess) {
+                            context.pushReplacement('/home');
+                            // context.read<SignInCubit>().passwordChanged('');
+                            // context.read<SignInCubit>().usernameChanged('');
+                          } else {}
                         },
                   child: const Text('Sign In'),
                 ),
@@ -129,18 +94,19 @@ class _SignInViewState extends State<SignInView> {
         }));
   }
 
-  void listener(context, state) {
+  void listener(mContext, state) {
     if (state.formStatus == FormStatus.submissionFailure) {
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(
-          const SnackBar(
-            content: Text('Datos incorrectos intente nuevamente'),
-          ),
-        );
+      Flushbar(
+      message: 'Datos Incorrectos',
+      duration: const Duration(seconds: 2),
+      backgroundColor: Colors.red,
+      flushbarStyle: FlushbarStyle.FLOATING,
+      flushbarPosition: FlushbarPosition.BOTTOM,
+      icon: const Icon(Icons.error, color: Colors.white),
+      shouldIconPulse: false,
+    ).show(context);
     }
   }
-
 
   TextFormField textFormFieldUsername(BuildContext mContext, state) {
     return TextFormField(
@@ -152,7 +118,8 @@ class _SignInViewState extends State<SignInView> {
             : null,
       ),
       inputFormatters: [
-        FilteringTextInputFormatter.allow(RegExp(r'[a-zA-Z]')), // Permite solo letras
+        FilteringTextInputFormatter.allow(
+            RegExp(r'[a-zA-Z]')), // Permite solo letras
       ],
       onChanged: (String value) {
         if (debounce?.isActive ?? false) debounce?.cancel();
@@ -171,13 +138,13 @@ class _SignInViewState extends State<SignInView> {
       inputFormatters: [LengthLimitingTextInputFormatter(5)],
       decoration: InputDecoration(
         suffixIcon: IconButton(
-        icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
-        onPressed: () {
-        setState(() {
-          obscurePassword = !obscurePassword;
-        });
-      },
-      ),
+          icon: Icon(obscurePassword ? Icons.visibility_off : Icons.visibility),
+          onPressed: () {
+            setState(() {
+              obscurePassword = !obscurePassword;
+            });
+          },
+        ),
         labelText: 'Password',
         errorText: state.passwordStatus == PasswordStatus.invalid
             ? 'Password Invalido ingrese 5 digitos'
@@ -186,6 +153,7 @@ class _SignInViewState extends State<SignInView> {
       onChanged: (String value) {
         mContext.read<SignInCubit>().passwordChanged(value);
       },
+      
     );
   }
 }

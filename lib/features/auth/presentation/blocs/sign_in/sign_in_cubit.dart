@@ -30,7 +30,7 @@ class SignInCubit extends Cubit<SignInState> {
     } on ArgumentError {
       emit(state.copyWith(usernameStatus: UsernameStatus.invalid));
     }
-    signIn();
+    refreshFormStatus();
   }
 
   void passwordChanged(String value) {
@@ -45,14 +45,14 @@ class SignInCubit extends Cubit<SignInState> {
     } on ArgumentError {
       emit(state.copyWith(passwordStatus: PasswordStatus.invalid));
     }
-    signIn();
+    refreshFormStatus();
   }
 
   void signIn()  {
     if (!(state.usernameStatus == UsernameStatus.valid) ||
         !(state.passwordStatus == PasswordStatus.valid)) {
+      emit(state.copyWith(formStatus: FormStatus.submissionFailure));
       emit(state.copyWith(formStatus: FormStatus.invalid));
-      emit(state.copyWith(formStatus: FormStatus.initial));
       return;
     }
 
@@ -64,6 +64,15 @@ class SignInCubit extends Cubit<SignInState> {
     }
   }
 
+  void refreshFormStatus() {
+    if (!(state.usernameStatus == UsernameStatus.valid) ||
+        !(state.passwordStatus == PasswordStatus.valid)) {
+      // emit(state.copyWith(formStatus: FormStatus.submissionFailure));
+      emit(state.copyWith(formStatus: FormStatus.invalid));
+      return;
+    }
+    emit(state.copyWith(formStatus: FormStatus.submissionSuccess));
+  }
 
 
 }
