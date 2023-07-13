@@ -1,9 +1,23 @@
-# tet_flutter_app
+# Test de Evaluacion Tecnica
 
-A new Flutter project.
+Projecto creado con Flutter 3.10.3
 
 ## Getting Started
 
+```bash
+git clone https://github.com/jotur96/tet_flutter_app.git
+```
+
+```bash
+flutter pub get
+```
+
+```bash
+flutter run
+```
+### Observacion
+Este proyecto fue desarrollado y testeado en un dispositivo android con API  33
+***
 This project is a starting point for a Flutter application.
 
 A few resources to get you started if this is your first Flutter project:
