@@ -11,7 +11,7 @@ import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/home/data/data_sources/remote/user_api_datasources.dart';
 import 'features/home/data/repository/user_repository_impl.dart';
 import 'features/home/domain/usecases/get_users_usecase.dart';
-import 'features/home/presentation/blocs/bloc/user_list_bloc.dart';
+import 'features/home/presentation/blocs/user_bloc/user_list_bloc.dart';
 
 typedef AppBuilder = Future<Widget> Function();
 
