@@ -55,7 +55,6 @@ class SignInCubit extends Cubit<SignInState> {
   void signIn()  {
     if (!(state.usernameStatus == UsernameStatus.valid) ||
         !(state.passwordStatus == PasswordStatus.valid)) {
-           print("is invalid");
       emit(state.copyWith(formStatus: FormStatus.submissionFailure));
       emit(state.copyWith(formStatus: FormStatus.invalid));
       if(state.passwordStatus != PasswordStatus.valid) {
