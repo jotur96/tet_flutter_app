@@ -2,6 +2,12 @@
 
 Projecto creado con Flutter 3.10.3
 
+## Link de la aplicacion - release
+
+https://drive.google.com/file/d/1bFxt-V-QV2zwnjL6vw5JGgBTN_xstKTy/view?usp=drive_link
+
+***
+
 ## Getting Started
 
 ```bash
